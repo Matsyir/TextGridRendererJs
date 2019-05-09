@@ -5,6 +5,7 @@ Initially just wanted to try some stuff with JavaScript string templates - that 
 
 ## Examples
 Randomizer: https://gfycat.com/jitterycheerycentipede : https://matsyir.github.io/TextGridRendererJs/randomizer/
+
 Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 
 ## Usage
