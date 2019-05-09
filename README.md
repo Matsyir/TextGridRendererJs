@@ -10,7 +10,7 @@ Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 
 ## Usage
 - The core renderer is in the root of the repo, under `textGridRenderer.js`, loaded by `index.html`, logic implemented in `main.js`. For example of a separate implementation, see the randomizer example: you do not need to edit `textGridRenderer.js`, only change the implementation logic in the update function in `main.js`.
-- The game is created and started by calling init() after the document is done loading (since it appends to the body). The constructor prepares it, but does not actually create it.
+- The game is created and started by calling `TextGridRenderer.init()` after the document is done loading (since it appends to the body). The constructor prepares it, but does not actually create it.
 - The size of the grid can be changed by changing the `TextGridRenderer.ROWS` and `TextGridRenderer.COLS` static constants in the core renderer.
 - Write your update logic in the function called to the renderer's constructor.
 - Ideally, `TextGridRenderer.update()` should not take longer to execute than `TextGridRenderer.UPDATE_DELAY` (in ms).
