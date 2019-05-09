@@ -9,8 +9,9 @@ Randomizer: https://gfycat.com/jitterycheerycentipede ~ https://matsyir.github.i
 Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 
 ## Usage
-- The size of the grid can be changed by changing the `TextGame.ROWS` and `TextGame.COLS` static constants.
-- Most of the ongoing logic happens in `TextGame.update()`. So, call your game logic in there, regardless if you implement it directly there or use a separate class.
+- The game is created and started by calling init() after the document is done loading (since it appends to the body). The constructor prepares it, but does not actually create it.
+- The size of the grid can be changed by changing the `TextGame.ROWS` and `TextGame.COLS` static constants in the core renderer.
+- Write your update logic in the function called to the renderer's constructor.
 - Ideally, `TextGame.update()` should not take longer to execute than `TextGame.UPDATE_DELAY` (in ms).
 - Do not set any of the main game properties unless you understand what exactly you're doing. For example, use `game.setPoint(r, c, char, charColor, bgColor)` instead of `game.points[r][c] = new TextGamePoint(char, charColor, bgColor)`.
 
