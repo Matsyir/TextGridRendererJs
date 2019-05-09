@@ -4,7 +4,8 @@ Simple text grid renderer in js to constantly update a grid of characters, and t
 Initially just wanted to try some stuff with JavaScript string templates - that turned out to be horribly inefficient (not the string templates themselves, but the way I was using them in this context). I decided to optimize it and make it work because it's a fun concept to play around with.
 
 ## Examples
-Randomizer: https://gfycat.com/jitterycheerycentipede
+Randomizer: https://gfycat.com/jitterycheerycentipede : https://matsyir.github.io/TextGridRendererJs/randomizer/
+Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 
 ## Usage
 - The size of the grid can be changed by changing the `TextGame.ROWS` and `TextGame.COLS` static constants.
