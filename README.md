@@ -1,9 +1,11 @@
 # TextBasedGameJs
-Wanted to try some stuff with javascript string templates
+Simple text grid renderer in js to constantly update a grid of characters, and their colors / background colors.
 
-crazy late night coding breakthrough right here
+Initially just wanted to try some stuff with JavaScript string templates - that turned out to be horribly inefficient (not the string templates themselves, but the way I was using them in this context). I decided to optimize it and make it work because it's a cool concept to play around with.
 
 
-## don't use this it's horribly inefficient, it uses over 2gb of ram to render 192 characters, lord knows how that happened
+## Usage
 
-I don't know why I made this I don't even have any intentions to make a text based game
+- The size of the grid can be changed by changing the TextGame.ROWS and TextGame.COLS static constants.
+- Ideally, update() should not take longer to execute than TextGame.UPDATE_DELAY (in ms).
+- Most of the ongoing logic happens in TextGame.update(). So, call your game logic in there, regardless if you implement it directly there or use a separate class.
