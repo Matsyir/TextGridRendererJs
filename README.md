@@ -1,8 +1,10 @@
 # TextBasedGameJs
 Simple text grid renderer in js to constantly update a grid of characters, and their colors / background colors. Currently it is configured to just randomize some of the character's properties every update.
 
-Initially just wanted to try some stuff with JavaScript string templates - that turned out to be horribly inefficient (not the string templates themselves, but the way I was using them in this context). I decided to optimize it and make it work because it's a cool concept to play around with.
+Initially just wanted to try some stuff with JavaScript string templates - that turned out to be horribly inefficient (not the string templates themselves, but the way I was using them in this context). I decided to optimize it and make it work because it's a fun concept to play around with.
 
+## Examples
+![Randomizer](https://gfycat.com/jitterycheerycentipede)
 
 ## Usage
 
