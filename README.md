@@ -1,7 +1,7 @@
 # TextGridRendererJs
-Simple text grid renderer in js to constantly update a grid of characters, and their colors / background colors. Currently it is configured to just randomize some of the character's properties every update.
+Simple text grid renderer in js to constantly update a grid of characters, and their colors / background colors (if changed). Can be used for all kinds of applications, mostly some kind of fun visualization playground. Though, it could also be used as the core for something more complex, like a text based game or a terminal style program.
 
-Initially just wanted to try some stuff with JavaScript string templates - that turned out to be horribly inefficient (not the string templates themselves, but the way I was using them in this context). I decided to optimize it and make it work because it's a fun concept to play around with.
+Initially just wanted to try some stuff with JavaScript string templates, with the idea of a text based game in mind - that turned out to be horribly inefficient (not the string templates themselves, but the way I was using them in this context). I decided to optimize it and make it work because it's a fun concept to play around with.
 
 ## Examples
 Randomizer: https://gfycat.com/jitterycheerycentipede ~ https://matsyir.github.io/TextGridRendererJs/randomizer/
@@ -18,3 +18,4 @@ Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 
 ## How it works
 `TextGridRenderer.init()` generates a `<div>` filled with `<span>`s with HTML id's to represent a 2D array of TextGridPoints, which hold a character, its color and its background color. Those properties can be fetched from the 2D array without processing the html elements. The HTML id's format is: `r{rowIndex}c{colIndex}`.
+It currently uses jQuery for ease of implementation, but everything could definitely be done without jQuery.
