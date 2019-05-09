@@ -14,9 +14,27 @@ class TextGridPoint {
 // Main TextGridRenderer class to handle the game.
 class TextGridRenderer {
     // Static constants related to the game. (Call without (): TextGridRenderer.ROWS)
-    static get UPDATE_DELAY() { return 10; }
-    static get ROWS() { return 8; }
-    static get COLS() { return 24; }
+
+    static get REALTIME_DELAY() { return 0.2; } // used when realtime = true
+    // in theory, true 'realtime' would be 0 delay between update executions, but
+    // that crashes the page. 0.2ms is very small.
+    static get UPDATE_DELAY() { return 10; } // only used if realtime = false
+
+    // These rows and columns with the default settings have a ratio of 16.5:9, as
+    // close to 16:9 as possible. Not exactly possible since the characters have a
+    // width height ratio of approx. 1:1.9458
+    static get ROWS() { return 9; }
+    static get COLS() { return 36; }
+
+    static changeConst_UPDATE_DELAY(newVal) {
+        Object.defineProperty(TextGridRenderer, "UPDATE_DELAY", { value: newVal, writable: false });
+    }
+    static changeConst_ROWS(newVal) {
+        Object.defineProperty(TextGridRenderer, "ROWS", { value: newVal, writable: false });
+    }
+    static changeConst_COLS(newVal) {
+        Object.defineProperty(TextGridRenderer, "COLS", { value: newVal, writable: false });
+    }
 
     // Generate an array of TextGamePoints based on the static size.
     static generateArr(initChar=" ", initTextColor="#000000", initBgColor="#FFFFFF") {
@@ -31,10 +49,16 @@ class TextGridRenderer {
         return arr;
     }
 
-    constructor(mainUpdate, initChar=" ", initCharColor="#000000", initBgColor="#FFFFFF") {
+    // Passed in is: the main update function (the implementation logic)
+    // 'realtime' bool: if true, the update function will be instantly called 0.2ms after
+    // the implementation logic is done executing, rather than queuing it at a fixed interval.
+    // Aside that, the init char, color and bgColor is sent (has default values)
+    constructor(mainUpdate, realtime=true, initChar=" ", initCharColor="#000000", initBgColor="#FFFFFF") {
+        this.realtime = realtime;
         this.mainUpdate = mainUpdate;
         this.points = TextGridRenderer.generateArr(initChar, initCharColor, initBgColor);
         this.updateTimeout = null;
+        this.paused = null;
     }
 
     getPointContainer(r, c) {
@@ -82,10 +106,20 @@ class TextGridRenderer {
         return str;
     }
 
+    pause() {
+        this.paused = true;
+        clearTimeout(this.updateTimeout);
+    }
+
+    resume() {
+        this.paused = false;
+        this.update();
+    }
+
     // initialization: create div filled with spans for each point and start updating the game.
     init(callback=null) {
         $(function(){
-            let pointContainers = '<div id="game" style="font-family: monospace; font-size: 24px; padding: 0px">';
+            let pointContainers = '<div id="game" style="font-family: monospace; font-size: 24px; padding: 0px; width: fit-content;">';
             for (let r = 0; r < TextGridRenderer.ROWS; r++) {
                 for (let c = 0; c < TextGridRenderer.COLS; c++) {
                     pointContainers = pointContainers.concat(`<span id="r${r}c${c}" style="color: ${this.points[r][c].charColor}; background: ${this.points[r][c].bgColor};">${this.points[r][c].char}</span>`);
@@ -96,6 +130,7 @@ class TextGridRenderer {
             pointContainers = pointContainers.concat("</div>");
 
             $("body").append(pointContainers);
+            this.paused = false;
 
             if (callback != null) {
                 callback();
@@ -103,22 +138,26 @@ class TextGridRenderer {
             this.update();
         }.bind(this));
     }
-
-    // make sure update is called every UPDATE_DELAY, so queue the next update for the
-    // future before the method executes. Ideally, update should be faster than UPDATE_DELAY.
-    // Another way to design this would be to have it refresh as fast as possible,
-    // instead of a fixed rate, by simply calling update after mainUpdate.
+    
     update() {
-        this.updateTimeout = setTimeout(this.update.bind(this), TextGridRenderer.UPDATE_DELAY);
+        if (this.paused) {
+            return;
+        }
+
+        // if !realtime, make sure update is called every UPDATE_DELAY, so queue the next
+        // update for the future before the method executes. Ideally, update should be
+        // faster than UPDATE_DELAY.
+        if (!this.realtime) {
+            this.updateTimeout = setTimeout(this.update.bind(this), TextGridRenderer.UPDATE_DELAY);
+        }
 
         this.mainUpdate();
-    }
 
-    pause() {
-        clearTimeout(this.updateTimeout);
-    }
-
-    resume() {
-        this.update();
+        // if realtime, recall update instantly after.
+        if (this.realtime) {
+            // it executes too fast and crashes the page if it is instantly
+            // called after execution, so delay execution by 0.2ms.
+            this.updateTimeout = setTimeout(this.update.bind(this), TextGridRenderer.REALTIME_DELAY);
+        }
     }
 }

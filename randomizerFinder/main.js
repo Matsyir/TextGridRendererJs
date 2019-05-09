@@ -7,14 +7,13 @@ function getRandomColor() {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+
 }
+TextGridRenderer.changeConst_ROWS(24);
+TextGridRenderer.changeConst_COLS(48);
 
-Object.defineProperty(TextGridRenderer, "UPDATE_DELAY", { value: 20, writable: false });
-Object.defineProperty(TextGridRenderer, "ROWS", { value: 24, writable: false });
-Object.defineProperty(TextGridRenderer, "COLS", { value: 48, writable: false });
-
-let game = new TextGridRenderer(update, "@");
-const target = "SWAG";
+let game = new TextGridRenderer(update, true, "@");
+const targetWords = ["HELLO", "SWAG", "WAHOO", "123456789", "JAVASCRIPT"];
 function update() {
     // randomize the chars and their colors
     for (let r = 0; r < TextGridRenderer.ROWS; r++) {
@@ -35,11 +34,22 @@ function update() {
         }
     }
 
-    let targIndex = game.getFullString("").indexOf(target);
+    let targIndex = -1;
+    let foundWordIndex = -1;
+    let gameStr = game.getFullString("");
+    for (let i = 0; i < targetWords.length; i++) {
+        targIndex = gameStr.indexOf(targetWords[i]);
+        if (targIndex >= 0) {
+            foundWordIndex = i;
+            break;
+        }
+    }
     if (targIndex >= 0) {
         game.setAllPoints(null, "rgba(255, 255, 255, 0.2)", "#000000");
-        for (let i = 0; i < target.length; i++) {
-            game.setPoint(Math.floor((targIndex + i) / TextGridRenderer.COLS), (targIndex + i) % TextGridRenderer.COLS, null, "#FFFFFF", "#000000");
+        for (let i = 0; i < targetWords[foundWordIndex].length; i++) {
+            game.setPoint(Math.floor((targIndex + i) / TextGridRenderer.COLS),
+                (targIndex + i) % TextGridRenderer.COLS,
+                null, "#FFFFFF", "#000000");
         }
         game.pause();
     }

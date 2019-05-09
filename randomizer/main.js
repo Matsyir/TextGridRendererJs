@@ -9,7 +9,7 @@ function getRandomColor() {
     return color;
 }
 
-let game = new TextGridRenderer(update, "@");
+let game = new TextGridRenderer(update, true, "@");
 function update() {
     // randomize the chars and their colors
     for (let r = 0; r < TextGridRenderer.ROWS; r++) {
@@ -17,13 +17,13 @@ function update() {
             let char = null;
             let charColor = null;
             let bgColor = null;
-            if (Math.random() < 0.3) { // only randomize some random chars not all of them
+            if (Math.random() < 0.333) { // only randomize some random chars not all of them
                 char = Math.random().toString(36).substring(2, 3).toUpperCase();
             }
-            if (Math.random() < 0.3) { // only randomize some random colors not all of them
+            if (Math.random() < 0.333) { // only randomize some random colors not all of them
                 charColor = getRandomColor();
             }
-            if (Math.random() < 0.3) { // only randomize some random bgColors not all of them
+            if (Math.random() < 0.333) { // only randomize some random bgColors not all of them
                 bgColor = getRandomColor();
             }
             game.setPoint(r, c, char, charColor, bgColor);
@@ -31,4 +31,9 @@ function update() {
     }
 }
 
-game.init();
+game.init(function(){
+    $("body").append("<br><input type='button' id='pause' value='Pause'>&nbsp;<input type='button' id='resume' value='Resume'>");
+
+    $("#pause").click(function() { game.pause(); });
+    $("#resume").click(function() { game.resume(); });
+}.bind(this));
