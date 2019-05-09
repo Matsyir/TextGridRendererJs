@@ -10,10 +10,10 @@ Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 
 ## Usage
 - The game is created and started by calling init() after the document is done loading (since it appends to the body). The constructor prepares it, but does not actually create it.
-- The size of the grid can be changed by changing the `TextGame.ROWS` and `TextGame.COLS` static constants in the core renderer.
+- The size of the grid can be changed by changing the `TextGridRenderer.ROWS` and `TextGridRenderer.COLS` static constants in the core renderer.
 - Write your update logic in the function called to the renderer's constructor.
-- Ideally, `TextGame.update()` should not take longer to execute than `TextGame.UPDATE_DELAY` (in ms).
-- Do not set any of the main game properties unless you understand what exactly you're doing. For example, use `game.setPoint(r, c, char, charColor, bgColor)` instead of `game.points[r][c] = new TextGamePoint(char, charColor, bgColor)`.
+- Ideally, `TextGridRenderer.update()` should not take longer to execute than `TextGridRenderer.UPDATE_DELAY` (in ms).
+- Do not set any of the main game properties unless you understand what exactly you're doing. For example, use `game.setPoint(r, c, char, charColor, bgColor)` instead of `game.points[r][c] = new TextGridPoint(char, charColor, bgColor)`.
 
 ## How it works
-`TextGame.init()` generates a `<div>` filled with `<span>`s with HTML id's to represent a 2D array of TextGamePoints, which hold a character, its color and its background color. Those properties can be fetched from the 2D array without processing the html elements. The HTML id's format is: `r{rowIndex}c{colIndex}`.
+`TextGridRenderer.init()` generates a `<div>` filled with `<span>`s with HTML id's to represent a 2D array of TextGridPoints, which hold a character, its color and its background color. Those properties can be fetched from the 2D array without processing the html elements. The HTML id's format is: `r{rowIndex}c{colIndex}`.
