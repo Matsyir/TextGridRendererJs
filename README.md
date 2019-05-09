@@ -16,5 +16,4 @@ Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/
 - Do not set any of the main game properties unless you understand what exactly you're doing. For example, use `game.setPoint(r, c, char, charColor, bgColor)` instead of `game.points[r][c] = new TextGamePoint(char, charColor, bgColor)`.
 
 ## How it works
-`TextGame.init()` generates a `<div>` filled with `<span>`s with HTML id's to represent a 2D array of TextGamePoints, which hold a character, its color and its background color. The HTML id's format is: `r{rowIndex}c{colIndex}`.
-Those properties can be fetched from the 2D array without processing the html elements.
+`TextGame.init()` generates a `<div>` filled with `<span>`s with HTML id's to represent a 2D array of TextGamePoints, which hold a character, its color and its background color. Those properties can be fetched from the 2D array without processing the html elements. The HTML id's format is: `r{rowIndex}c{colIndex}`.
