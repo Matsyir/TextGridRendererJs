@@ -9,7 +9,12 @@ function getRandomColor() {
     return color;
 }
 
+Object.defineProperty(TextGridRenderer, "UPDATE_DELAY", { value: 20, writable: false });
+Object.defineProperty(TextGridRenderer, "ROWS", { value: 24, writable: false });
+Object.defineProperty(TextGridRenderer, "COLS", { value: 48, writable: false });
+
 let game = new TextGridRenderer(update, "@");
+const target = "SWAG";
 function update() {
     // randomize the chars and their colors
     for (let r = 0; r < TextGridRenderer.ROWS; r++) {
@@ -29,6 +34,20 @@ function update() {
             game.setPoint(r, c, char, charColor, bgColor);
         }
     }
+
+    let targIndex = game.getFullString("").indexOf(target);
+    if (targIndex >= 0) {
+        game.setAllPoints(null, "rgba(255, 255, 255, 0.2)", "#000000");
+        for (let i = 0; i < target.length; i++) {
+            game.setPoint(Math.floor((targIndex + i) / TextGridRenderer.COLS), (targIndex + i) % TextGridRenderer.COLS, null, "#FFFFFF", "#000000");
+        }
+        game.pause();
+    }
 }
 
-game.init();
+game.init(function() {
+    $("body").append("<br><input type='button' id='pause' value='Pause'>&nbsp;<input type='button' id='resume' value='Resume'>");
+
+    $("#pause").click(function() { game.pause(); });
+    $("#resume").click(function() { game.resume(); });
+}.bind(this));

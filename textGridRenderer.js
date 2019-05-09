@@ -83,7 +83,7 @@ class TextGridRenderer {
     }
 
     // initialization: create div filled with spans for each point and start updating the game.
-    init() {
+    init(callback=null) {
         $(function(){
             let pointContainers = '<div id="game" style="font-family: monospace; font-size: 24px; padding: 0px">';
             for (let r = 0; r < TextGridRenderer.ROWS; r++) {
@@ -97,6 +97,9 @@ class TextGridRenderer {
 
             $("body").append(pointContainers);
 
+            if (callback != null) {
+                callback();
+            }
             this.update();
         }.bind(this));
     }
