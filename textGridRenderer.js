@@ -14,7 +14,7 @@ class TextGridPoint {
 // Main TextGridRenderer class to handle the game.
 class TextGridRenderer {
     // Static constants related to the game. (Call without (): TextGridRenderer.ROWS)
-    static get UPDATE_DELAY() { return 5; }
+    static get UPDATE_DELAY() { return 10; }
     static get ROWS() { return 8; }
     static get COLS() { return 24; }
 
@@ -66,28 +66,56 @@ class TextGridRenderer {
         }
     }
 
-    // initialization: create div filled with spans for each point and start updating the game.
-    init() {
-        let pointContainers = '<div id="game" style="font-family: monospace; font-size: 24px; padding: 0px">';
+    setAllPoints(char=null, charColor=null, bgColor=null) {
         for (let r = 0; r < TextGridRenderer.ROWS; r++) {
             for (let c = 0; c < TextGridRenderer.COLS; c++) {
-                pointContainers = pointContainers.concat(`<span id="r${r}c${c}" style="color: ${this.points[r][c].charColor}; background: ${this.points[r][c].bgColor};">${this.points[r][c].char}</span>`);
+                this.setPoint(r, c, char, charColor, bgColor);
             }
-            pointContainers = pointContainers.concat("<br>");
         }
-
-        pointContainers = pointContainers.concat("</div>");
-
-        $("body").append(pointContainers);
-
-        this.update();
     }
 
+    getFullString(newLine="\n") {
+        let str = "";
+        for (let r = 0; r < TextGridRenderer.ROWS; r++) {
+            str = str.concat(this.points[r].map(p => p.char).join(""), newLine);
+        }
+        return str;
+    }
+
+    // initialization: create div filled with spans for each point and start updating the game.
+    init() {
+        $(function(){
+            let pointContainers = '<div id="game" style="font-family: monospace; font-size: 24px; padding: 0px">';
+            for (let r = 0; r < TextGridRenderer.ROWS; r++) {
+                for (let c = 0; c < TextGridRenderer.COLS; c++) {
+                    pointContainers = pointContainers.concat(`<span id="r${r}c${c}" style="color: ${this.points[r][c].charColor}; background: ${this.points[r][c].bgColor};">${this.points[r][c].char}</span>`);
+                }
+                pointContainers = pointContainers.concat("<br>");
+            }
+
+            pointContainers = pointContainers.concat("</div>");
+
+            $("body").append(pointContainers);
+
+            this.update();
+        }.bind(this));
+    }
+
+    // make sure update is called every UPDATE_DELAY, so queue the next update for the
+    // future before the method executes. Ideally, update should be faster than UPDATE_DELAY.
+    // Another way to design this would be to have it refresh as fast as possible,
+    // instead of a fixed rate, by simply calling update after mainUpdate.
     update() {
-        // make sure update is called every UPDATE_DELAY, so queue the method for the future
-        // before the method executes. Ideally, update should be faster than UPDATE_DELAY.
         this.updateTimeout = setTimeout(this.update.bind(this), TextGridRenderer.UPDATE_DELAY);
 
         this.mainUpdate();
+    }
+
+    pause() {
+        clearTimeout(this.updateTimeout);
+    }
+
+    resume() {
+        this.update();
     }
 }

@@ -4,6 +4,4 @@ function update() {
     
 }
 
-$(function(){
-    game.init();
-});
+game.init();
