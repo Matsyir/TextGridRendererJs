@@ -6,7 +6,7 @@ Initially just wanted to try some stuff with JavaScript string templates, with t
 ## Examples
 RandomizerFinder (warning: realtime execution - very high CPU load): https://matsyir.github.io/TextGridRendererJs/randomizerFinder/  
 Randomizer (warning: realtime execution - high CPU load): https://gfycat.com/jitterycheerycentipede ~ https://matsyir.github.io/TextGridRendererJs/randomizer/  
-This one's kind of a stress test. It looks pretty cool.
+Both of the randomizers are basically of a stress test (especially RandomizerzFinder). It looks pretty cool.
 
 Core renderer initialized: https://matsyir.github.io/TextGridRendererJs/  
 Nothing special with this one, it's just the blank canvas of the core renderer without any implementation logic.
