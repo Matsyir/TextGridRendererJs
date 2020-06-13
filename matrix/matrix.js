@@ -19,7 +19,7 @@ function createMatrixLine(c) {
         // x and y are the root position of the line
         x: x, // x will not change.
         y: 0, // y will be going up each update (down, visually).
-        delay: rand(0, 4), // basically the opposite of speed, higher means it will wait longer before moving
+        delay: rand(1, 8), // basically the opposite of speed, higher means it will wait longer before moving
         wait: 0, // amount of ticks waited without movement
         length: length, // length goes downward on the y axis (up, visually)
         points: points,
@@ -55,8 +55,8 @@ function createMatrixLine(c) {
     }
 }
 
-TextGridRenderer.setRows(24);
-TextGridRenderer.setCols(92);
+// TextGridRenderer.setRows(24);
+// TextGridRenderer.setCols(92);
 TextGridRenderer.setUpdateDelay(10);
 let game = new TextGridRenderer(update, true, "#", "rgba(255, 255, 255, 0.2)", "#000000");
 
