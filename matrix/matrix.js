@@ -58,7 +58,7 @@ function createMatrixLine(c) {
 TextGridRenderer.setRows(24);
 TextGridRenderer.setCols(92);
 TextGridRenderer.setUpdateDelay(10);
-let game = new TextGridRenderer(update, false, "#", "rgba(255, 255, 255, 0.2)", "#000000");
+let game = new TextGridRenderer(update, true, "#", "rgba(255, 255, 255, 0.2)", "#000000");
 
 let matrixLines = [];
 let maxMatrixLines = Math.floor(TextGridRenderer.COLS * 0.7);
