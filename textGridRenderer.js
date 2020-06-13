@@ -20,29 +20,29 @@ class TextGridRenderer {
     // that crashes the page. 0.2ms is very small.
     static get UPDATE_DELAY() { return 10; } // only used if realtime = false
 
-    // These rows and columns with the default settings have a ratio of 16.5:9, as
+    // These rows and columns with the default settings have a ratio of ~16.5:9, as
     // close to 16:9 as possible. Not exactly possible since the characters have a
     // width height ratio of approx. 1:1.9458
-    static get ROWS() { return 9; }
+    static get ROWS() { return 10; }
     static get COLS() { return 36; }
 
-    static changeConst_UPDATE_DELAY(newVal) {
+    static setUpdateDelay(newVal) {
         Object.defineProperty(TextGridRenderer, "UPDATE_DELAY", { value: newVal, writable: false });
     }
-    static changeConst_ROWS(newVal) {
+    static setRows(newVal) {
         Object.defineProperty(TextGridRenderer, "ROWS", { value: newVal, writable: false });
     }
-    static changeConst_COLS(newVal) {
+    static setCols(newVal) {
         Object.defineProperty(TextGridRenderer, "COLS", { value: newVal, writable: false });
     }
 
     // Generate an array of TextGamePoints based on the static size.
     static generateArr(initChar=" ", initTextColor="#000000", initBgColor="#FFFFFF") {
         let arr = [];
-        for (let r = 0; r < this.ROWS; r++) {
-            arr[r] = [];
-            for (let c = 0; c < this.COLS; c++) {
-                arr[r][c] = new TextGridPoint(initChar, initTextColor, initBgColor);
+        for (let y = 0; y < this.ROWS; y++) {
+            arr[y] = [];
+            for (let x = 0; x < this.COLS; x++) {
+                arr[y][x] = new TextGridPoint(initChar, initTextColor, initBgColor);
             }
         }
         
@@ -61,49 +61,51 @@ class TextGridRenderer {
         this.paused = null;
     }
 
-    getPointContainer(r, c) {
-        return $(`#r${r}c${c}`);
+    getPointContainer(x, y) {
+        return $(`#y${y}x${x}`);
     }
-    getPointChar(r, c) {
-        return this.points[r][c].char;
+    getPointChar(x, y) {
+        return this.points[y][x].char;
     }
-    getPointCharColor(r, c) {
-        return this.points[r][c].charColor;
+    getPointCharColor(x, y) {
+        return this.points[y][x].charColor;
     }
-    getPointBgColor(r, c) {
-        return this.points[r][c].bgColor;
+    getPointBgColor(x, y) {
+        return this.points[y][x].bgColor;
     }    
 
-    setPoint(row, col, char=null, charColor=null, bgColor=null) {
-        let pointContainer = this.getPointContainer(row, col);
+    setPoint(x, y, char=null, charColor=null, bgColor=null) {
+        let pointContainer = this.getPointContainer(x, y);
         if (char != null) {
-            this.points[row][col].char = char;
+            this.points[y][x].char = char;
             pointContainer.text(char);
         }
         if (charColor != null) {
-            this.points[row][col].charColor = charColor;
+            this.points[y][x].charColor = charColor;
             pointContainer.css("color", charColor);
         }
         if (bgColor != null) {
-            this.points[row][col].bgColor = bgColor;
+            this.points[y][x].bgColor = bgColor;
             pointContainer.css("background", bgColor);
         }
     }
 
     setAllPoints(char=null, charColor=null, bgColor=null) {
-        for (let r = 0; r < TextGridRenderer.ROWS; r++) {
-            for (let c = 0; c < TextGridRenderer.COLS; c++) {
-                this.setPoint(r, c, char, charColor, bgColor);
+        for (let y = 0; y < TextGridRenderer.ROWS; y++) {
+            for (let x = 0; x < TextGridRenderer.COLS; x++) {
+                this.setPoint(x, y, char, charColor, bgColor);
             }
         }
     }
 
     getFullString(newLine="\n") {
-        let str = "";
-        for (let r = 0; r < TextGridRenderer.ROWS; r++) {
-            str = str.concat(this.points[r].map(p => p.char).join(""), newLine);
-        }
-        return str;
+        return game.points.reduce((str, row) => {
+            str += row.reduce((t, c) => {
+                t += c.char;
+                return t;
+            }, "");
+            return str + newLine;
+        }, "");
     }
 
     pause() {
@@ -116,20 +118,20 @@ class TextGridRenderer {
         this.update();
     }
 
-    // initialization: create div filled with spans for each point and start updating the game.
-    init(callback=null) {
+    // initialization: create div filled with spans for each point and start updating the grid.
+    init(callback=null, appendedTo="body") {
         $(function(){
-            let pointContainers = '<div id="game" style="font-family: monospace; font-size: 24px; padding: 0px; width: fit-content;">';
-            for (let r = 0; r < TextGridRenderer.ROWS; r++) {
-                for (let c = 0; c < TextGridRenderer.COLS; c++) {
-                    pointContainers = pointContainers.concat(`<span id="r${r}c${c}" style="color: ${this.points[r][c].charColor}; background: ${this.points[r][c].bgColor};">${this.points[r][c].char}</span>`);
+            let pointContainers = '<div id="textGridRendererJs" style="font-family: monospace; font-size: 24px; padding: 0px; width: fit-content;">';
+            for (let y = 0; y < TextGridRenderer.ROWS; y++) {
+                for (let x = 0; x < TextGridRenderer.COLS; x++) {
+                    pointContainers = pointContainers.concat(`<span id="y${y}x${x}" style="color: ${this.points[y][x].charColor}; background: ${this.points[y][x].bgColor};">${this.points[y][x].char}</span>`);
                 }
                 pointContainers = pointContainers.concat("<br>");
             }
 
             pointContainers = pointContainers.concat("</div>");
 
-            $("body").append(pointContainers);
+            $(appendedTo).append(pointContainers);
             this.paused = false;
 
             if (callback != null) {

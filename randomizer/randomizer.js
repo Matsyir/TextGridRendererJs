@@ -12,8 +12,8 @@ function getRandomColor() {
 let game = new TextGridRenderer(update, true, "@");
 function update() {
     // randomize the chars and their colors
-    for (let r = 0; r < TextGridRenderer.ROWS; r++) {
-        for (let c = 0; c < TextGridRenderer.COLS; c++) {
+    for (let y = 0; y < TextGridRenderer.ROWS; y++) {
+        for (let x = 0; x < TextGridRenderer.COLS; x++) {
             let char = null;
             let charColor = null;
             let bgColor = null;
@@ -26,7 +26,7 @@ function update() {
             if (Math.random() < 0.333) { // only randomize some random bgColors not all of them
                 bgColor = getRandomColor();
             }
-            game.setPoint(r, c, char, charColor, bgColor);
+            game.setPoint(x, y, char, charColor, bgColor);
         }
     }
 }

@@ -9,15 +9,15 @@ function getRandomColor() {
     return color;
 
 }
-TextGridRenderer.changeConst_ROWS(24);
-TextGridRenderer.changeConst_COLS(48);
+TextGridRenderer.setRows(24);
+TextGridRenderer.setCols(48);
 
 let game = new TextGridRenderer(update, true, "@");
 const targetWords = ["HELLO", "SWAG", "WAHOO", "123456789", "JAVASCRIPT"];
 function update() {
     // randomize the chars and their colors
-    for (let r = 0; r < TextGridRenderer.ROWS; r++) {
-        for (let c = 0; c < TextGridRenderer.COLS; c++) {
+    for (let x = 0; x < TextGridRenderer.COLS; x++) {
+        for (let y = 0; y < TextGridRenderer.ROWS; y++) {
             let char = null;
             let charColor = null;
             let bgColor = null;
@@ -30,7 +30,7 @@ function update() {
             if (Math.random() < 0.3) { // only randomize some random bgColors not all of them
                 bgColor = getRandomColor();
             }
-            game.setPoint(r, c, char, charColor, bgColor);
+            game.setPoint(x, y, char, charColor, bgColor);
         }
     }
 
@@ -47,8 +47,8 @@ function update() {
     if (targIndex >= 0) {
         game.setAllPoints(null, "rgba(255, 255, 255, 0.2)", "#000000");
         for (let i = 0; i < targetWords[foundWordIndex].length; i++) {
-            game.setPoint(Math.floor((targIndex + i) / TextGridRenderer.COLS),
-                (targIndex + i) % TextGridRenderer.COLS,
+            game.setPoint((targIndex + i) % TextGridRenderer.COLS,
+                Math.floor((targIndex + i) / TextGridRenderer.COLS),
                 null, "#FFFFFF", "#000000");
         }
         game.pause();
